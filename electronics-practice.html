@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Electronics (lab.) Practice</title>
+<style>
+:root{--bg:#fff;--ink:#1d2125;--mute:#5f6b76;--line:#c9d3d8;--qbox:#e4eff0;--info:#f3f5f6;--grey:#dee2e6;--blue:#0f6cbf;--good:#c8ecd3;--goodb:#2f9e5a;--bad:#f8d3d8;--badb:#d6455d;--pink:#d6336c;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);background:var(--bg);color:var(--ink);color-scheme:light dark}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14181c;--ink:#e6e9ec;--mute:#9aa6b0;--line:#38424b;--qbox:#1e2a2d;--info:#1b2126;--grey:#323b43;--blue:#2f8ae0;--good:#173d27;--bad:#432027}}
+:root[data-theme="dark"]{--bg:#14181c;--ink:#e6e9ec;--mute:#9aa6b0;--line:#38424b;--qbox:#1e2a2d;--info:#1b2126;--grey:#323b43;--blue:#2f8ae0;--good:#173d27;--bad:#432027}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif}
+.wrap{max-width:900px;margin:0 auto;padding:14px 14px 40px}
+.crumb{font-size:13px;color:var(--mute)}
+.title{display:flex;align-items:center;gap:10px;margin:10px 0 12px;font-size:26px;line-height:1.15}
+.ico{flex:none;width:34px;height:34px;border:2px solid var(--pink);border-radius:7px;color:var(--pink);display:grid;place-items:center;font-size:20px}
+.btn{border:0;border-radius:6px;padding:9px 16px;font:inherit;font-size:15px;cursor:pointer;background:var(--grey);color:var(--ink)}
+.btn.blue{background:var(--blue);color:#fff}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.sm{padding:6px 12px;font-size:14px}
+[hidden]{display:none!important}
+.timerrow{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin:18px 0 8px}
+.timer{border:1px solid #c0504d;padding:5px 12px;font-size:15px}
+.qrow{display:grid;grid-template-columns:130px 1fr;gap:10px;align-items:start}
+.info{background:var(--info);border:1px solid var(--line);padding:10px;font-size:13px}
+.info .qn{font-size:14px}.info .qn b{font-size:20px}
+.info div{margin-bottom:6px}
+.flag{background:none;border:0;padding:0;color:var(--blue);font:inherit;cursor:pointer}
+.qbox{background:var(--qbox);border:1px solid var(--line);border-radius:6px;padding:16px}
+.qt{font-size:16px;margin-bottom:14px}
+.opt{display:flex;gap:8px;align-items:flex-start;padding:7px 8px;border-radius:6px;border:1px solid transparent;cursor:pointer;margin-bottom:2px}
+.opt input{margin-top:5px;flex:none;accent-color:var(--blue)}
+.opt .l{flex:none;min-width:18px}
+.opt.good{background:var(--good);border-color:var(--goodb)}
+.opt.bad{background:var(--bad);border-color:var(--badb)}
+.lnk{display:inline-block;margin:10px 0 0 6px;color:var(--blue);cursor:pointer;background:none;border:0;font:inherit;padding:0}
+.fb{margin-top:14px;padding:10px 12px;border-radius:6px;font-size:14px;background:var(--info);border:1px solid var(--line)}
+.nav{display:flex;justify-content:space-between;margin-top:26px}
+.card{display:block;width:100%;text-align:left;margin-bottom:12px;padding:14px 16px;background:var(--info);border:1px solid var(--line);border-radius:6px;color:var(--ink);font:inherit;cursor:pointer}
+.card b{display:block;font-size:18px}.card span{font-size:13px;color:var(--mute)}
+.grid{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0}
+.grid button{width:38px;height:38px;border-radius:6px;border:1px solid var(--line);background:var(--info);color:var(--ink);font:inherit;cursor:pointer}
+.grid .g{background:var(--good);border-color:var(--goodb)}.grid .r{background:var(--bad);border-color:var(--badb)}
+.note{font-size:12px;color:var(--mute);margin-top:22px}
+@media (max-width:640px){
+.wrap{padding:10px 10px 34px}
+.title{font-size:21px}
+.qrow{grid-template-columns:1fr}
+.info{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center}
+.info div{margin:0}
+.qbox{padding:12px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb" id="crumb">Electronics (lab.) / Week 10</div>
+  <h1 class="title"><span class="ico">≡</span><span id="ttl">Electronics (lab.)</span></h1>
+  <button class="btn sm" id="back" hidden>Back</button>
+
+  <div id="menu" style="margin-top:18px"></div>
+
+  <div id="quiz" hidden>
+    <div class="timerrow"><div class="timer">Time left <span id="tm"></span></div><button class="btn sm" id="hide">Hide</button></div>
+    <div class="qrow">
+      <div class="info">
+        <div class="qn">Question <b id="n"></b></div>
+        <div id="st"></div>
+        <div>Marked out of 1.00</div>
+        <div><button class="flag" id="flag"></button></div>
+      </div>
+      <div class="qbox">
+        <div class="qt" id="qt"></div>
+        <div id="opts"></div>
+        <button class="lnk" id="clr">Clear my choice</button>
+        <button class="btn sm lnk" id="chk" style="background:var(--grey);color:var(--ink)">Check answer</button>
+        <div class="fb" id="fb" hidden></div>
+      </div>
+    </div>
+    <div class="nav"><button class="btn" id="prev">Previous page</button><button class="btn blue" id="next">Next page</button></div>
+  </div>
+
+  <div id="sum" hidden>
+    <h2 style="margin:18px 0 4px">Summary of attempt</h2>
+    <p id="score" style="font-size:18px;margin:6px 0"></p>
+    <div class="grid" id="grid"></div>
+    <button class="btn blue" id="again">Try again</button>
+    <button class="btn" id="tomenu">Мәзір</button>
+  </div>
+
+  <p class="note">Жаттығу беті: жауаптар тек осы бетте тексеріледі.</p>
+</div>
+
+<script>
+const DATA = {"quiz6": {"title": "Quiz 6 (Lectures 8, 9 & problems)", "minutes": 30, "items": [{"q": "What is the resonant-frequency formula for an ideal LC tank circuit?", "a": "fr = 1 / 2π√LC", "w": ["fr = L / 2πC", "fr = 2π√LC", "fr = C / 2πL"], "e": "Thomson’s formula: fr = 1 / (2π√(LC))."}, {"q": "Which change generally improves the common-mode rejection of a differential amplifier?", "a": "Increasing the emitter supply resistance", "w": ["Removing both collector resistors", "Shorting the two collector terminals", "Decreasing the emitter supply resistance"], "e": "A larger tail (emitter) resistance, or a current source, lowers the common-mode gain and so raises the CMRR."}, {"q": "What type of output does an op-amp integrator produce in response to a constant DC input?", "a": "A linear ramp", "w": ["A square wave with zero slope", "A fixed-frequency sine wave", "A constant zero voltage"], "e": "The integrator accumulates a constant input over time, so the output changes linearly: a ramp."}, {"q": "Why is a current source useful in a differential amplifier?", "a": "It provides a nearly constant current and high output impedance", "w": ["It has very low output impedance", "It amplifies common-mode signals", "It eliminates differential gain"], "e": "The very high tail impedance strongly suppresses common-mode signals while leaving the differential gain intact."}, {"q": "Which set lists common symptoms of a faulty oscillator?", "a": "No output, reduced amplitude, unstable frequency, and frequency error", "w": ["Rectification, filtering, and regulation", "Infinite output, zero supply current, and perfect stability", "High CMRR, low offset, and virtual ground"], "e": "A faulty oscillator typically shows no output, low amplitude, an unstable frequency or a wrong frequency."}, {"q": "An op amp has a unity-gain frequency of 1 MHz and a closed-loop voltage gain of 100. What is its approximate small-signal bandwidth?", "a": "10 kHz", "w": ["1 kHz", "100 kHz", "1 MHz"], "e": "Gain-bandwidth product is constant: BW = funity / Acl = 1 MHz / 100 = 10 kHz."}, {"q": "What does a comparator do?", "a": "It switches its output according to which input voltage is greater", "w": ["It adds two analog input voltages", "It maintains a constant emitter current", "It always operates with negative feedback"], "e": "A comparator drives its output to the high or low saturation level depending on which input is larger; it normally runs open-loop."}, {"q": "Which two conditions must be satisfied for an amplifier to oscillate?", "a": "The gain must overcome feedback loss, and the feedback must be in phase", "w": ["The supply voltage must be AC, and the feedback must be negative", "The input resistance must be zero, and the output resistance must be infinite", "The gain must be zero, and the feedback must be out of phase"], "e": "Barkhausen criterion: loop gain ≥ 1 and total loop phase shift of 0° (or 360°), i.e. positive feedback."}, {"q": "At resonance, the output of the lead-lag network used in a Wien bridge oscillator is approximately what fraction of its input?", "a": "One-third", "w": ["Equal to the input", "Two-thirds", "One-half"], "e": "At fr the lead-lag network attenuates by 1/3, so the amplifier needs a gain of 3 to sustain oscillation."}, {"q": "What is the resonant-frequency formula for an RC lead-lag network with equal R and C values?", "a": "fr = 1 / 2πRC", "w": ["fr = R / 2πC", "fr = C / 2πR", "fr = 2πRC"], "e": "With R1 = R2 = R and C1 = C2 = C: fr = 1 / (2πRC)."}, {"q": "If a differential amplifier is driven at the base of Q1, which output appears at the collector of Q1?", "a": "An inverted output", "w": ["A constant DC output only", "A noninverted output", "No output"], "e": "Q1 acts as a common-emitter stage, so its collector output is 180° out of phase with the base input."}, {"q": "What is the voltage-gain formula for a noninverting op-amp amplifier?", "a": "AV = 1 + RF / R1", "w": ["AV = 1 - RF / R1", "AV = R1 / RF", "AV = -RF / R1"], "e": "Noninverting gain is 1 + RF/R1 (always ≥ 1 and positive). −RF/R1 is the inverting amplifier."}, {"q": "What distinguishes a Colpitts oscillator from a Hartley oscillator?", "a": "It uses a tapped capacitive leg in the tank circuit", "w": ["It produces only rectangular waves", "It uses a quartz crystal instead of a tank circuit", "It uses no capacitors"], "e": "Colpitts uses a capacitive voltage divider (two capacitors) in the tank; Hartley uses a tapped inductor."}, {"q": "What distinguishes a Hartley oscillator from other LC oscillators?", "a": "It uses a tapped inductor in its tank circuit", "w": ["It uses a tapped capacitive leg in its tank circuit", "It uses three identical RC networks", "It does not use feedback"], "e": "Hartley’s feedback is taken from a tapped (or two-section) inductor. The tapped capacitor is the Colpitts."}, {"q": "At resonance, an RC lead-lag network has:", "a": "Maximum output and zero-degree phase shift", "w": ["Minimum output and 180-degree phase shift", "Maximum output and 270-degree phase shift", "Zero output and 90-degree phase shift"], "e": "At fr the phase shift is 0° and the output is at its maximum (1/3 of the input)."}, {"q": "What can happen when the required output voltage changes faster than an op amp’s slew rate?", "a": "The waveform may become distorted", "w": ["The supply voltage doubles", "The input impedance becomes zero", "The CMRR becomes infinite"], "e": "The output cannot follow the input fast enough, so the waveform is distorted (a sine wave becomes triangle-like, with reduced amplitude)."}, {"q": "What is meant by a virtual ground at the inverting input of a negatively fed-back op amp?", "a": "The input remains near ground potential without a direct ground connection", "w": ["The input is physically connected to earth ground", "The input is disconnected from the circuit", "The input has infinite voltage"], "e": "Because of the huge open-loop gain and negative feedback, the inverting input stays at about the same voltage as the grounded noninverting input, without being tied to ground."}, {"q": "For an astable multivibrator, what is the approximate time constant of one RC timing interval?", "a": "T = 0.69RC", "w": ["T = 1 / RC", "T = 2πRC", "T = RC / 0.69"], "e": "Each capacitor charges or discharges to its switching level in about ln(2)·RC ≈ 0.69RC."}, {"q": "What waveform is produced by an astable multivibrator?", "a": "Rectangular waveform", "w": ["Exponential waveform with no switching", "Pure DC waveform", "Sine wave only"], "e": "An astable multivibrator flips continuously between two states with no trigger, giving a rectangular (square) wave."}, {"q": "Which type of signal is ideally rejected by a differential amplifier?", "a": "A common-mode signal", "w": ["An out-of-phase signal", "A signal applied to only one input", "A differential-mode signal"], "e": "A signal that appears equally on both inputs (common-mode) produces no difference voltage, so it is ideally rejected."}, {"q": "Which oscillator uses an RC lead-lag network to control its frequency?", "a": "Wien bridge oscillator", "w": ["Colpitts oscillator", "Hartley oscillator", "Crystal overtone oscillator"], "e": "The Wien bridge oscillator’s positive feedback network is an RC lead-lag circuit."}, {"q": "What does a differential amplifier primarily amplify?", "a": "The difference between two input signals", "w": ["Only DC supply voltages", "Only common-mode signals", "The sum of two input signals"], "e": "It amplifies the difference between its two inputs, Vin1 − Vin2."}, {"q": "The power bandwidth of an op amp is calculated using which expression?", "a": "SR / (2π × Vp)", "w": ["Vp / (2π × SR)", "2π / (SR × Vp)", "SR × 2π × Vp"], "e": "Full-power bandwidth: f(max) = SR / (2πVp), where Vp is the peak output voltage."}, {"q": "What is one important advantage of op-amp active filters?", "a": "They eliminate the need for inductors in many filter designs", "w": ["They cannot be cascaded", "They always require large inductors", "They operate only at DC"], "e": "Active filters use R, C and an op amp, avoiding bulky, costly inductors; they can also be cascaded easily."}, {"q": "Which technique can help prevent unwanted feedback through power-supply lines?", "a": "Adding an RC decoupling network or bypass capacitor", "w": ["Connecting the output directly to the input", "Increasing the load on every stage", "Removing all bypass capacitors"], "e": "Decoupling/bypass capacitors shunt the signal currents on the supply line to ground, so stages do not interact through the supply."}, {"q": "What is a voltage-controlled oscillator (VCO)?", "a": "An oscillator whose frequency is controlled by an applied voltage", "w": ["An amplifier that always uses negative feedback", "An oscillator that produces DC only", "An oscillator with no frequency-control network"], "e": "A VCO’s output frequency is set by a DC control voltage at its input."}, {"q": "What is hysteresis in a Schmitt trigger?", "a": "The difference between the upper and lower threshold points", "w": ["The delay caused by an RC low-pass filter", "The maximum op-amp supply voltage", "The ratio of differential gain to common-mode gain"], "e": "Hysteresis = UTP − LTP. This voltage window keeps noise from causing false switching."}, {"q": "If R = 10 kΩ and C = 0.01 µF in a lead-lag network, what is the approximate resonant frequency?", "a": "1.59 kHz", "w": ["15.9 kHz", "159 kHz", "159 Hz"], "e": "fr = 1 / (2π · 10 000 · 10⁻⁸) = 1 / (6.283 × 10⁻⁴) ≈ 1592 Hz ≈ 1.59 kHz."}, {"q": "What is the voltage-gain formula for an inverting op-amp amplifier?", "a": "AV = -RF / R1", "w": ["AV = -R1 / RF", "AV = 1 + RF / R1", "AV = RF / R1"], "e": "Inverting gain is −RF/R1; the minus sign shows the 180° phase inversion."}, {"q": "An inverting amplifier has RF = 100 kΩ and R1 = 20 kΩ. What is its voltage gain?", "a": "-5", "w": ["+5", "+20", "-20"], "e": "AV = −RF/R1 = −100k / 20k = −5."}, {"q": "What is the main purpose of a dual or bipolar power supply?", "a": "To provide positive and negative voltages relative to ground", "w": ["To provide two positive voltages only", "To eliminate the need for ground", "To double the input frequency"], "e": "It supplies +V and −V rails around a common ground, so the output can swing both above and below 0 V."}, {"q": "How does the parallel resonant frequency of a quartz crystal compare with its series resonant frequency?", "a": "It is slightly higher", "w": ["It is always identical", "It is exactly half", "It is much lower"], "e": "The parallel (antiresonant) frequency lies slightly above the series resonant frequency because of the holder capacitance."}, {"q": "Which type of feedback is normally required for sustained oscillation?", "a": "Positive feedback", "w": ["Current feedback only", "Zero feedback", "Negative feedback"], "e": "Oscillators need positive (regenerative) feedback with loop gain of 1. Negative feedback opposes the signal and stabilizes amplifiers."}, {"q": "A noninverting amplifier has RF = 40 kΩ and R1 = 10 kΩ. What is its voltage gain?", "a": "5", "w": ["-5", "4", "-4"], "e": "AV = 1 + RF/R1 = 1 + 40k/10k = 5."}, {"q": "Why is a buffer amplifier often connected to an oscillator output?", "a": "To isolate the oscillator from load changes and improve frequency stability", "w": ["To increase loading on the oscillator", "To stop all oscillations", "To convert the output into DC"], "e": "The buffer’s high input impedance keeps load changes from pulling the oscillator frequency."}]}, "endterm": {"title": "Endterm", "minutes": 30, "items": [{"q": "Write the formula of resistor R22 using Loop currents method", "a": "R4 + R3 + R5", "w": ["R1 + R2 + R4", "R1 + R3 + R6", "R1 - R2 - R4"], "e": "In the loop-current method R22 is the self-resistance of loop 2: the sum of all resistors in that loop. (Схема суретте көрінбейді: нұсқалар R11, R22, R33 ретімен берілген деп қабылдадым, схемаға қарап тексеріңіз.)"}, {"q": "In an op-amp subtracting amplifier, which signal is subtracted from the other?", "a": "The inverting-input signal is subtracted from the noninverting-input signal", "w": ["The output signal is subtracted from both inputs", "The two supply voltages are subtracted from the output", "The noninverting-input signal is subtracted from the inverting-input signal"], "e": "A subtracting (difference) amplifier outputs a gain times (V noninverting − V inverting): the inverting-input signal is subtracted from the noninverting one."}, {"q": "An amplifier receives 80 W of DC power and delivers 52 W of output power. How much power is dissipated as heat?", "a": "28 W", "w": ["32 W", "52 W", "132 W"], "e": "Dissipated power = PDC − Pout = 80 − 52 = 28 W."}, {"q": "What does the DC load line show?", "a": "All possible combinations of collector current and collector-emitter voltage", "w": ["The value of the AC emitter resistance only", "Only the transistor current gain", "The input signal frequency"], "e": "The DC load line plots every IC–VCE pair allowed by the supply and DC resistors; the Q-point lies on it."}, {"q": "Why are op amps normally operated with negative feedback?", "a": "To obtain a controlled gain and wider bandwidth", "w": ["To increase common-mode gain", "To make the open-loop gain infinite", "To eliminate the need for a power supply"], "e": "Negative feedback gives a stable, predictable closed-loop gain, better linearity and wider bandwidth (at the cost of gain)."}, {"q": "What is the approximate conduction angle of a typical class C amplifier?", "a": "90 degrees", "w": ["360 degrees", "180 degrees", "270 degrees"], "e": "Class C conducts for well under 180° of the cycle (typically about 90–120°). Class A = 360°, class B = 180°, class AB is between 180° and 360°."}, {"q": "How is amplifier bandwidth calculated from the upper and lower cutoff frequencies?", "a": "fH - fL", "w": ["fH / fL", "fH x fL", "fH + fL"], "e": "BW = fH − fL (upper cutoff minus lower cutoff)."}, {"q": "In a tuned RF amplifier, what is selectivity?", "a": "The ability to reject unwanted frequencies", "w": ["The ability to amplify DC signals", "The ability to eliminate transistor bias", "The ability to increase supply voltage"], "e": "Selectivity is how well a tuned circuit passes the wanted frequency band while rejecting other frequencies."}]}};
+const $ = id => document.getElementById(id);
+let key = null, S = [], cur = 0, left = 0, tick = null, done = false, hideT = false;
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function fmt(t){t=Math.max(t,0);const h=Math.floor(t/3600),m=Math.floor(t%3600/60),s=t%60;return h+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');}
+function view(id){['menu','quiz','sum'].forEach(x=>$(x).hidden=x!==id);$('back').hidden=id==='menu';}
+function score(){return S.filter(s=>s.sel!==null&&s.o[s.sel].c).length;}
+
+function buildMenu(){
+  $('menu').innerHTML='';
+  Object.keys(DATA).forEach(k=>{
+    const d=DATA[k],b=document.createElement('button');
+    b.className='card';
+    b.innerHTML='<b></b><span></span>';
+    b.firstChild.textContent=d.title;
+    b.lastChild.textContent=d.items.length+' сұрақ · '+d.minutes+' мин';
+    b.onclick=()=>start(k);
+    $('menu').appendChild(b);
+  });
+}
+
+function showMenu(){
+  key=null;clearInterval(tick);
+  $('ttl').textContent='Electronics (lab.)';
+  $('crumb').textContent='Electronics (lab.) / Week 10';
+  view('menu');
+  if(location.hash) location.hash='';
+}
+
+function start(k){
+  key=k;const d=DATA[k];
+  S=d.items.map(it=>({q:it.q,e:it.e,o:shuffle([it.a,...it.w].map((t,i)=>({t,c:i===0}))),sel:null,flag:false,chk:false}));
+  cur=0;done=false;left=d.minutes*60;
+  $('ttl').textContent=d.title;
+  $('crumb').textContent='Electronics (lab.) / Week 10 / '+d.title;
+  if(location.hash.slice(1)!==k) location.hash=k;
+  clearInterval(tick);
+  $('tm').textContent=fmt(left);
+  tick=setInterval(()=>{left--;$('tm').textContent=fmt(left);if(left<=0)finish();},1000);
+  view('quiz');render();window.scrollTo(0,0);
+}
+
+function render(){
+  const s=S[cur];
+  $('n').textContent=cur+1;
+  $('st').textContent=s.sel===null?'Not yet answered':'Answer saved';
+  $('flag').textContent=s.flag?'⚑ Remove flag':'⚐ Flag question';
+  $('qt').textContent=s.q;
+  const box=$('opts');box.innerHTML='';
+  s.o.forEach((o,i)=>{
+    const lb=document.createElement('label');lb.className='opt';
+    const r=document.createElement('input');r.type='radio';r.name='o';r.checked=s.sel===i;r.disabled=s.chk;
+    r.onchange=()=>{s.sel=i;render();};
+    const l=document.createElement('span');l.className='l';l.textContent=String.fromCharCode(97+i)+'.';
+    const t=document.createElement('span');t.textContent=o.t;
+    lb.append(r,l,t);
+    if(s.chk){if(o.c)lb.classList.add('good');else if(i===s.sel)lb.classList.add('bad');}
+    box.appendChild(lb);
+  });
+  $('clr').hidden=s.sel===null||s.chk;
+  $('chk').hidden=s.sel===null||s.chk;
+  const fb=$('fb');
+  if(s.chk){
+    const ok=s.sel!==null&&s.o[s.sel].c;
+    let txt=s.sel===null?'Жауап берілмеді. ':(ok?'Дұрыс! ':'Қате. ');
+    if(!ok) txt+='Дұрыс жауап: '+s.o.find(o=>o.c).t+'. ';
+    fb.textContent=txt+s.e;fb.hidden=false;
+  } else fb.hidden=true;
+  $('prev').disabled=cur===0;
+  $('next').textContent=cur===S.length-1?'Finish attempt':'Next page';
+}
+
+function finish(){
+  clearInterval(tick);done=true;S.forEach(s=>s.chk=true);
+  $('score').textContent='Нәтиже: '+score()+' / '+S.length;
+  const g=$('grid');g.innerHTML='';
+  S.forEach((s,i)=>{
+    const b=document.createElement('button');b.textContent=i+1;
+    if(s.sel!==null)b.className=s.o[s.sel].c?'g':'r';
+    b.onclick=()=>{cur=i;view('quiz');render();window.scrollTo(0,0);};
+    g.appendChild(b);
+  });
+  view('sum');window.scrollTo(0,0);
+}
+
+$('next').onclick=()=>{if(cur<S.length-1){cur++;render();window.scrollTo(0,0);}else finish();};
+$('prev').onclick=()=>{if(cur>0){cur--;render();window.scrollTo(0,0);}};
+$('clr').onclick=()=>{S[cur].sel=null;render();};
+$('chk').onclick=()=>{S[cur].chk=true;render();};
+$('flag').onclick=()=>{S[cur].flag=!S[cur].flag;render();};
+$('hide').onclick=()=>{hideT=!hideT;$('tm').hidden=hideT;$('hide').textContent=hideT?'Show':'Hide';};
+$('back').onclick=showMenu;
+$('tomenu').onclick=showMenu;
+$('again').onclick=()=>start(key);
+
+function route(){
+  const k=location.hash.slice(1);
+  if(DATA[k]){if(k!==key)start(k);}
+  else if(key!==null)showMenu();
+}
+window.addEventListener('hashchange',route);
+buildMenu();
+route();
+</script>
+</body>
+</html>
